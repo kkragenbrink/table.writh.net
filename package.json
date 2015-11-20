@@ -1,0 +1,30 @@
+{
+  "name": "sheets.writh.net",
+  "version": "1.0.0",
+  "description": "A character sheet database.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/kkragenbrink/sheets.writh.net.git"
+  },
+  "keywords": [
+    "character",
+    "sheets",
+    "character",
+    "roleplaying",
+    "rpg",
+    "D&D"
+  ],
+  "author": "Kevin Kragenbrink <kevin@writh.net>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kkragenbrink/sheets.writh.net/issues"
+  },
+  "homepage": "https://github.com/kkragenbrink/sheets.writh.net#readme",
+  "dependencies": {
+    "koa": "^1.1.2"
+  }
+}
