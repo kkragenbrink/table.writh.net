@@ -1,0 +1,17 @@
+app:
+  name:
+  port:
+  timeout: 10000
+
+database:
+  name:
+
+log:
+  levels:
+    default: debug
+
+mush:
+  host:
+  port:
+  username:
+  password:
