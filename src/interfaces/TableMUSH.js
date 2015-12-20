@@ -93,6 +93,7 @@ class TableMUSH {
         });
         this.conn.once('connect', () => {
             this.conn.write(util.format('connect %s %s\n', this.config.username, this.config.password), 'utf-8');
+            log.info('Connected to TableMUSH.');
 
             Object.defineProperty(this, 'interval', {
                 configurable: false,
