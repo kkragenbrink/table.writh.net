@@ -14,6 +14,7 @@ class dd extends AbstractParser {
         super(options);
 
         this.options.verbose = !~['false', '0', 'no'].indexOf(this.options.verbose);
+//        this.options.verbose = ~['true', '1', 'yes'].indexOf(this.options.verbose);
 
         this.stack = [];
         this.results = [];
@@ -54,6 +55,16 @@ class dd extends AbstractParser {
 
             this.results = highest;
             this.results.reverse();
+        }
+    }
+
+    compare (roll) {
+        switch (this.comparison) {
+            case '>': return roll.total > this.target; break;
+            case '>=': return roll.total >= this.target; break;
+            case '<': return roll.total < this.target; break;
+            case '<=': return roll.total <= this.target; break;
+            case '=': return roll.total == this.target; break;
         }
     }
 
@@ -99,7 +110,7 @@ class dd extends AbstractParser {
         while (n) {
             if (this.types.Target.test(n)) {
                 this.target = sum;
-                sum = stack.pop();
+                sum = this.stack.pop();
                 this.comparison = n;
             }
             else {
@@ -173,7 +184,7 @@ class dd extends AbstractParser {
         this.stack.push(operand * -1);
     }
 
-    *parseTarget (operator) {
+    *tokenTarget (operator) {
         this.stack.push(operator);
     }
 
@@ -195,6 +206,7 @@ class dd extends AbstractParser {
 
         this.parsed.forEach((roll) => {
             let extras = [];
+            if (this.comparison) extras.push(this.compare(roll) ? '[ansi(<#90C090>, Success)]' : '[ansi(<#900000>, Failure)]');
             if (this.options.verbose) extras.push(util.format('Rolls: \\[%j\\]', roll.results));
             if (this.options.verbose && roll.discarded.length) extras.push(util.format('Discarded: \\[%j\\]', roll.discarded));
             if (this.options.verbose && this.options.lowest) extras.push('Lowest: ' + this.options.lowest);
