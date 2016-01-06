@@ -17,7 +17,7 @@ class Flip {
 
     toMUSH (dbref) {
         MUSH.getInstance().oemit(dbref, util.format('\\[[ansi(<#00A0F0>, webroll)]\\] [name(%s)] flips a coin: %s', dbref, this.result));
-        MUSH.getInstance().pemit(dbref, util.format('\\[[ansi(<#00A0F0>, webroll)]\\] you flip a coin: %s', dbref, this.result));
+        MUSH.getInstance().pemit(dbref, util.format('\\[[ansi(<#00A0F0>, webroll)]\\] You flip a coin: %s', this.result));
     }
 }
 
