@@ -1,6 +1,7 @@
 'use strict';
 
 const async = require('src/Async');
+const log = require('src/interfaces/Log').getLogger('src.parsers.dice.dd');
 const util = require('util');
 
 const AbstractParser = require('src/parsers/AbstractParser');
@@ -80,7 +81,6 @@ class dd extends AbstractParser {
             results: this.results,
             discarded: this.discarded
         });
-
         return this.parsed;
     }
 
@@ -106,7 +106,7 @@ class dd extends AbstractParser {
     reduce () {
         let sum = this.stack.pop();
         let n = this.stack.pop();
-
+        
         while (n) {
             if (this.types.Target.test(n)) {
                 this.target = sum;
@@ -131,6 +131,7 @@ class dd extends AbstractParser {
             return this.roll(sides);
         }
 
+        this.stack.push(result);
         this.results.push(result);
     }
 
@@ -166,12 +167,14 @@ class dd extends AbstractParser {
         }
 
         this.analyzeRolls();
-
+    
+        /*
         let total = this.results.reduce((total, value) => {
             return (total + value);
         }, 0);
 
-        this.stack.push(total);
+        this.stack.push(value);
+        */
     }
 
     *tokenSubtract () {
