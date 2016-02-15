@@ -104,6 +104,8 @@ class dd extends AbstractParser {
     }
 
     reduce () {
+        this.stack = this.stack.concat(this.results);
+        
         let sum = this.stack.pop();
         let n = this.stack.pop();
         
@@ -131,7 +133,7 @@ class dd extends AbstractParser {
             return this.roll(sides);
         }
 
-        this.stack.push(result);
+//        this.stack.push(result);
         this.results.push(result);
     }
 
@@ -167,14 +169,13 @@ class dd extends AbstractParser {
         }
 
         this.analyzeRolls();
-    
-        /*
+/*
         let total = this.results.reduce((total, value) => {
             return (total + value);
         }, 0);
 
-        this.stack.push(value);
-        */
+        this.stack.push(total);
+*/
     }
 
     *tokenSubtract () {
