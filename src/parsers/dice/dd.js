@@ -195,12 +195,12 @@ class dd extends AbstractParser {
     get types () {
         return {
             Repeat: /^\s*(\d+x)/i,
+            Comment: /^\s*(\(.+?\))/,
             Roll: /^\s*(\d+d\d+)/i,
             Subtract: /^\s*(-)/i,
             Add: /^\s*(\+)/,
             Number: /^\s*(\d+)/i,
-            Target: /^\s*(>=|<=|<|>|=)/,
-            Comment: /^\s*(\(.+?\))/
+            Target: /^\s*(>=|<=|<|>|=)/
         };
     }
 
