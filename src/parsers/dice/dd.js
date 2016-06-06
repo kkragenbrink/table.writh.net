@@ -215,6 +215,7 @@ class dd extends AbstractParser {
                 if (this.options.verbose && this.options.highest) extras.push('Highest: ' + this.options.highest);
                 if (this.options.verbose && this.options.reroll) extras.push('Reroll: ' + this.options.reroll);
                 if (this.options.private) extras.push('Private');
+                if (this.options.dm) { extras.push('Results Hidden'); this.options.private = true; }
 
                 let message = util.format('[name(%s)] rolls %s: %s', dbref, roll.roll, roll.total);
                 if (extras.length) {
@@ -231,6 +232,9 @@ class dd extends AbstractParser {
 
         if (!this.options.private) {
             MUSH.getInstance().oemit(dbref, util.format('\\[[ansi(<#00A0F0>,webroll)]\\] %s', messages.join('\n[space(10)]')));
+        }
+        else if (this.options.dm) {
+            MUSH.getInstance().oemit(dbref, util.format('\\[[ansi(<#00A0F0>,webroll)]\\] [name(%s)] rolls some dice behind the DM screen.', dbref));
         }
     }
 }
