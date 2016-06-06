@@ -1,11 +1,11 @@
 'use strict';
 
-const AbstractAction = require('src/actions/AbstractAction');
-
 const async = require('src/Async');
 const util = require('util');
 
-class Roll extends AbstractAction {
+const AbstractAction = require('src/actions/AbstractAction');
+
+class Character extends AbstractAction {
     *init (path) {
         let options = {};
 
@@ -13,10 +13,6 @@ class Roll extends AbstractAction {
             part = part.split(':');
             options[part[0]] = part[1];
         });
-
-        if (!options.type) {
-            options.type = 'dd';
-        }
 
         let model = require(util.format('src/parsers/dice/%s', options.type));
         let instance = new model(options);
@@ -28,4 +24,4 @@ class Roll extends AbstractAction {
     }
 }
 
-module.exports = Roll;
+module.exports = Character;

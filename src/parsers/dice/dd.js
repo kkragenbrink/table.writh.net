@@ -169,13 +169,6 @@ class dd extends AbstractParser {
         }
 
         this.analyzeRolls();
-/*
-        let total = this.results.reduce((total, value) => {
-            return (total + value);
-        }, 0);
-
-        this.stack.push(total);
-*/
     }
 
     *tokenSubtract () {

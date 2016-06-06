@@ -1,18 +1,38 @@
 'use strict';
 
+const AbstractAction = require('src/MUSHactions/AbstractAction');
+
+const log = require('src/interfaces/Log').getLogger('src.MUSHactions.Roll');
+const fs = require('fs');
 const async = require('src/Async');
 const util = require('util');
 
-const AbstractAction = require('src/MUSHactions/AbstractAction');
-
+const parsers = [];
 class Roll extends AbstractAction {
     *init (path) {
-        let options = {};
+        if (parsers.length === 0) {
+            const files = fs.readdirSync('src/parsers/dice/')
+            files.forEach((file) => {
+                file = file.substr(0, file.indexOf('.'));
+                parsers.push(file);
+            });
+        }
 
+        let options = {};
         path.forEach((part) => {
-            part = part.split(':');
-            options[part[0]] = part[1];
+            if (~part.indexOf(':')) {
+                part = part.split(':');
+                options[part[0]] = part[1];
+            }
+            else if (~parsers.indexOf(part)){
+                options.type = part;
+            }
+            else {
+                options[part] = true;
+            }
         });
+
+        log.info('%j', options);
 
         if (!options.type) {
             options.type = 'dd';
