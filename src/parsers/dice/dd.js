@@ -60,6 +60,8 @@ class dd extends AbstractParser {
 
     compare (roll) {
         switch (this.comparison) {
+            case '<>':
+            case '!=': return roll.total != this.target; break;
             case '>': return roll.total > this.target; break;
             case '>=': return roll.total >= this.target; break;
             case '<': return roll.total < this.target; break;
@@ -191,7 +193,7 @@ class dd extends AbstractParser {
             Subtract: /^\s*(-)/i,
             Add: /^\s*(\+)/,
             Number: /^\s*(\d+)/i,
-            Target: /^\s*(>=|<=|<|>|=)/
+            Target: /^\s*(<>|!=|>=|<=|<|>|=)/
         };
     }
 
