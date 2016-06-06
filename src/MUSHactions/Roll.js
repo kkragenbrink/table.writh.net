@@ -2,7 +2,6 @@
 
 const AbstractAction = require('src/MUSHactions/AbstractAction');
 
-const log = require('src/interfaces/Log').getLogger('src.MUSHactions.Roll');
 const fs = require('fs');
 const async = require('src/Async');
 const util = require('util');
@@ -31,8 +30,6 @@ class Roll extends AbstractAction {
                 options[part] = true;
             }
         });
-
-        log.info('%j', options);
 
         if (!options.type) {
             options.type = 'dd';

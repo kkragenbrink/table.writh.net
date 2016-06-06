@@ -1,21 +1,20 @@
 'use strict';
 
-const async = require('src/Async');
-const log = require('src/interfaces/Log').getLogger('src.parsers.dice.dd');
-const util = require('util');
-
 const AbstractParser = require('src/parsers/AbstractParser');
 const MUSH = require('src/interfaces/TableMUSH');
 const Mersenne = require('mersenne');
 const Token = require('src/models/Token');
 const Tokenizer = require('src/Tokenizer');
 
+const async = require('src/Async');
+const log = require('src/interfaces/Log').getLogger('src.parsers.dice.dd');
+const util = require('util');
+
 class dd extends AbstractParser {
     constructor (options) {
         super(options);
 
         this.options.verbose = !~['false', '0', 'no'].indexOf(this.options.verbose);
-//        this.options.verbose = ~['true', '1', 'yes'].indexOf(this.options.verbose);
 
         this.stack = [];
         this.results = [];
@@ -104,11 +103,11 @@ class dd extends AbstractParser {
     }
 
     reduce () {
-        this.stack = this.stack.concat(this.results);
-        
+        this.stack = this.results.concat(this.stack);
+
         let sum = this.stack.pop();
         let n = this.stack.pop();
-        
+
         while (n) {
             if (this.types.Target.test(n)) {
                 this.target = sum;
@@ -133,7 +132,6 @@ class dd extends AbstractParser {
             return this.roll(sides);
         }
 
-//        this.stack.push(result);
         this.results.push(result);
     }
 
@@ -198,7 +196,6 @@ class dd extends AbstractParser {
     }
 
     toMUSH (dbref) {
-
         let messages = [];
 
         this.parsed.forEach((roll) => {
