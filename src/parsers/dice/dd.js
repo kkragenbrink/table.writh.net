@@ -86,14 +86,19 @@ class dd extends AbstractParser {
     }
 
     *parseNextToken () {
-        let token = this.tokenizer.getNextToken();
+        try {
+            let token = this.tokenizer.getNextToken();
 
-        if (token instanceof Token && token != Tokenizer.EOSTOKEN) {
-            let parse = async(this.parseToken, this);
-            yield parse(token);
+            if (token instanceof Token && token != Tokenizer.EOSTOKEN) {
+                let parse = async(this.parseToken, this);
+                yield parse(token);
 
-            let next = async(this.parseNextToken, this);
-            yield next();
+                let next = async(this.parseNextToken, this);
+                yield next();
+            }
+        }
+        catch (e) {
+            this.invalid = true;
         }
     }
 
@@ -200,24 +205,33 @@ class dd extends AbstractParser {
     toMUSH (dbref) {
         let messages = [];
 
-        this.parsed.forEach((roll) => {
-            let extras = [];
-            if (this.comparison) extras.push(this.compare(roll) ? '[ansi(<#90C090>, Success)]' : '[ansi(<#900000>, Failure)]');
-            if (this.options.verbose) extras.push(util.format('Rolls: \\[%j\\]', roll.results));
-            if (this.options.verbose && roll.discarded.length) extras.push(util.format('Discarded: \\[%j\\]', roll.discarded));
-            if (this.options.verbose && this.options.lowest) extras.push('Lowest: ' + this.options.lowest);
-            if (this.options.verbose && this.options.highest) extras.push('Highest: ' + this.options.highest);
-            if (this.options.verbose && this.options.reroll) extras.push('Reroll: ' + this.options.reroll);
+        if (!this.invalid) {
+            this.parsed.forEach((roll) => {
+                let extras = [];
+                if (this.comparison) extras.push(this.compare(roll) ? '[ansi(<#90C090>, Success)]' : '[ansi(<#900000>, Failure)]');
+                if (this.options.verbose) extras.push(util.format('Rolls: \\[%j\\]', roll.results));
+                if (this.options.verbose && roll.discarded.length) extras.push(util.format('Discarded: \\[%j\\]', roll.discarded));
+                if (this.options.verbose && this.options.lowest) extras.push('Lowest: ' + this.options.lowest);
+                if (this.options.verbose && this.options.highest) extras.push('Highest: ' + this.options.highest);
+                if (this.options.verbose && this.options.reroll) extras.push('Reroll: ' + this.options.reroll);
+                if (this.options.private) extras.push('Private');
 
-            let message = util.format('[name(%s)] rolls %s: %s', dbref, roll.roll, roll.total);
-            if (extras.length) {
-                message += ' (' + extras.join(', ') + ')';
-            }
-            messages.push(message);
-        });
+                let message = util.format('[name(%s)] rolls %s: %s', dbref, roll.roll, roll.total);
+                if (extras.length) {
+                    message += ' (' + extras.join(', ') + ')';
+                }
+                messages.push(message);
+            });
+        } else {
+            this.options.private = true;
+            messages.push('Invalid syntax.');
+        }
 
         MUSH.getInstance().pemit(dbref, util.format('\\[[ansi(<#00A0F0>,webroll)]\\] %s', messages.join('\n[space(10)]')));
-        MUSH.getInstance().oemit(dbref, util.format('\\[[ansi(<#00A0F0>,webroll)]\\] %s', messages.join('\n[space(10)]')));
+
+        if (!this.options.private) {
+            MUSH.getInstance().oemit(dbref, util.format('\\[[ansi(<#00A0F0>,webroll)]\\] %s', messages.join('\n[space(10)]')));
+        }
     }
 }
 
