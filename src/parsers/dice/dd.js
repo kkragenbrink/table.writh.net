@@ -7,7 +7,6 @@ const Token = require('src/models/Token');
 const Tokenizer = require('src/Tokenizer');
 
 const async = require('src/Async');
-const log = require('src/interfaces/Log').getLogger('src.parsers.dice.dd');
 const util = require('util');
 
 class dd extends AbstractParser {
@@ -61,12 +60,12 @@ class dd extends AbstractParser {
     compare (roll) {
         switch (this.comparison) {
             case '<>':
-            case '!=': return roll.total != this.target; break;
-            case '>': return roll.total > this.target; break;
-            case '>=': return roll.total >= this.target; break;
-            case '<': return roll.total < this.target; break;
-            case '<=': return roll.total <= this.target; break;
-            case '=': return roll.total == this.target; break;
+            case '!=': return roll.total != this.target;
+            case '>': return roll.total > this.target;
+            case '>=': return roll.total >= this.target;
+            case '<': return roll.total < this.target;
+            case '<=': return roll.total <= this.target;
+            case '=': return roll.total == this.target;
         }
     }
 
@@ -215,7 +214,10 @@ class dd extends AbstractParser {
                 if (this.options.verbose && this.options.highest) extras.push('Highest: ' + this.options.highest);
                 if (this.options.verbose && this.options.reroll) extras.push('Reroll: ' + this.options.reroll);
                 if (this.options.private) extras.push('Private');
-                if (this.options.dm) { extras.push('Results Hidden'); this.options.private = true; }
+                if (this.options.dm) {
+                    extras.push('Results Hidden');
+                    this.options.private = true;
+                }
 
                 let message = util.format('[name(%s)] rolls %s: %s', dbref, roll.roll, roll.total);
                 if (extras.length) {
