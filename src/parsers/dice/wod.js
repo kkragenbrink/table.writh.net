@@ -21,7 +21,7 @@ class wod extends AbstractParser {
     }
 
     analyzeRolls (rolls, rerolls, results) {
-        const reroll = this.options.reroll || 10;
+        const reroll = this.options.again || 10;
         const weakness = this.options.weakness || 0;
 
         results.forEach((roll) => {
@@ -114,7 +114,7 @@ class wod extends AbstractParser {
 
     roll (re) {
         const roll = Mersenne.rand(10) + 1;
-        const reroll = this.options.reroll || 10;
+        const reroll = this.options.again || 10;
 
         const target = this.options.target || 8;
         const weakness = this.options.weakness || 0;
@@ -189,7 +189,7 @@ class wod extends AbstractParser {
                 if (this.options.verbose) extras.push(`Rolls: ${rolls}`);
                 if (this.options.verbose && rerolls.length) extras.push(`Rerolls: ${rerolls}`);
                 if (this.options.target) extras.push(`Target: ${this.options.target}`);
-                if (this.options.reroll) extras.push(`Target: ${this.options.reroll}`);
+                if (this.options.again) extras.push(`Again: ${this.options.again}`);
                 if (this.options.weakness) extras.push(`Weakness: ${this.options.weakness}`);
                 if (this.options.private) extras.push('Private');
                 if (this.options.chance) extras.push('Chance Roll!');
