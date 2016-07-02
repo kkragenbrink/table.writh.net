@@ -3,6 +3,7 @@
 const AbstractParser = require('src/parsers/AbstractParser');
 const MUSH = require('src/interfaces/TableMUSH');
 const Mersenne = require('mersenne');
+const Random = require('src/interfaces/Random');
 const Token = require('src/models/Token');
 const Tokenizer = require('src/Tokenizer');
 
@@ -19,6 +20,8 @@ class dd extends AbstractParser {
         this.results = [];
         this.discarded = [];
         this.parsed = [];
+
+        this.random = new Random();
     }
 
     analyzeRolls () {
@@ -130,15 +133,21 @@ class dd extends AbstractParser {
         return sum;
     }
 
-    roll (sides) {
-        let result = Mersenne.rand(sides) + 1;
+    *roll (sides, dice) {
+        let next = async(this.random.rand, this.random);
+        let results = yield next(sides, dice);
 
-        if (+this.options.reroll > 0 && result <= +this.options.reroll) {
-            this.discarded.push(result);
-            return this.roll(sides);
+        if (+this.options.reroll > 0) {
+            const rerolls = results.filter((result) => result <= +this.options.reroll);
+            if (rerolls.length > 0) {
+                results = results.filter((result) => result > +this.options.reroll);
+                this.discarded = this.discarded.concat(rerolls);
+                let next = async(this.roll, this);
+                yield next(sides, rerolls.length);
+            }
         }
 
-        this.results.push(result);
+        this.results = this.results.concat(results);
     }
 
     *tokenAdd () {}
@@ -168,9 +177,16 @@ class dd extends AbstractParser {
         let dice = parseInt(roll.substring(0, index));
         let sides = parseInt(roll.substring(index + 1));
 
-        while (dice--) {
-            this.roll(sides);
+        if (dice > 30) {
+            throw new Error('You may not roll more than 30 dice at a time.');
         }
+
+        if (sides > 1000) {
+            throw new Error('You may not roll dice of sides greater than 1000.');
+        }
+
+        let next = async(this.roll, this);
+        yield next(sides, dice);
 
         this.analyzeRolls();
     }

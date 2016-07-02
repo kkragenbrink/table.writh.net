@@ -10,7 +10,7 @@ const parsers = [];
 class Roll extends AbstractAction {
     *init (path) {
         if (parsers.length === 0) {
-            const files = fs.readdirSync('src/parsers/dice/')
+            const files = fs.readdirSync('src/parsers/dice/');
             files.forEach((file) => {
                 file = file.substr(0, file.indexOf('.'));
                 parsers.push(file);
