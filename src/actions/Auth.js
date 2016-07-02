@@ -41,7 +41,7 @@ class Auth extends AbstractAction {
                 };
 
                 log.debug(this.context.body);
-                this.context.cookies.set('auth', JSON.stringify(this.context.body), {
+                this.context.cookies.set('auth', new Buffer(JSON.stringify(this.context.body)), {
                     signed: true,
                     expires: expiration
                 });
