@@ -4,9 +4,9 @@ const winston = require('winston');
 winston.trace = winston.Logger.prototype.trace = winston.log.bind(winston, 'trace');
 
 class Log {
-    static configure (config) {
+    static configure(config) {
         winston.level = config.log.levels.default;
-
+        
         winston.remove(winston.transports.Console);
         winston.add(winston.transports.Console, {
             timestamp: true,
@@ -25,7 +25,7 @@ class Log {
 
     }
 
-    static getLogger (name) {
+    static getLogger(name) {
         if (winston.loggers.loggers[name]) {
             return winston.loggers.get(name);
         }
