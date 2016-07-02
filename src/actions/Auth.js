@@ -2,8 +2,6 @@
 
 const async = require('src/Async');
 
-const POST_METHOD = 'POST';
-
 const AbstractAction = require('src/actions/AbstractAction');
 const MUSH = require('src/interfaces/TableMUSH');
 
@@ -39,7 +37,7 @@ class Auth extends AbstractAction {
     }
 
     *validate () {
-        if (this.context.method === POST_METHOD && this.context.request.body) {
+        if (this.context.method === 'POST' && this.context.request.body) {
             let user = this.context.request.body.user;
             let pass = this.context.request.body.pass;
 
@@ -61,6 +59,9 @@ class Auth extends AbstractAction {
 
                 return true;
             }
+        }
+        else if (this.context.method === 'GET') {
+            this.content.body = this.getUserToken();
         }
 
         this.context.status = 401;

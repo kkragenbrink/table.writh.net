@@ -1,7 +1,7 @@
 app:
-  name:
-  port:
-  timeout:
+  name: test
+  port: 8174
+  timeout: 10000
   secret:
 
 database:
