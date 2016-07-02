@@ -1,8 +1,8 @@
 app:
-  name:
-  port:
-  timeout:
-  secret:
+  name: test
+  port: 8174
+  timeout: 10000
+  secret: ".585>a%P.KvCi-U344i/X&e?jDuJf]-{=/9`7V#/3s*c95Kb~]'6WFfnCkIXdM5"
 
 database:
   name: db/table.json
@@ -12,7 +12,7 @@ log:
     default: debug
 
 mush:
-  host:
-  port:
-  username:
-  password:
+  host: tablemush.com
+  port: 4202
+  username: "#15"
+  password: Y6wy8-U,W6FFER

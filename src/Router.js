@@ -52,6 +52,8 @@ class Router {
     static *auth (next) {
         this.type = 'application/json';
 
+        this.request.req.connection.encrypted = true; // FIXME: Workaround for being behind a proxy.
+
         let auth = new Auth(this);
         let authenticate = async(auth.init, auth);
         let isAuthorized = yield authenticate();
