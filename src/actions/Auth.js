@@ -40,8 +40,11 @@ class Auth extends AbstractAction {
                     name: yield MUSH.getInstance().getName(user)
                 };
 
-                log.debug(this.context.body);
-                this.context.cookies.set('auth', new Buffer(JSON.stringify(this.context.body)), {
+                const cookie = new Buffer();
+                cookie.write(JSON.stringify(this.context.body));
+
+                log.debug(cookie);
+                this.context.cookies.set('auth', cookie, {
                     signed: true,
                     expires: expiration
                 });
