@@ -27,6 +27,7 @@
   "homepage": "https://github.com/kkragenbrink/table.writh.net#readme",
   "dependencies": {
     "bluebird": "^3.0.5",
+    "extend": "^3.0.0",
     "js-yaml": "^3.4.3",
     "koa": "^1.1.2",
     "koa-json-body": "^4.0.0",

@@ -5,7 +5,7 @@ const Promise = require('bluebird');
 module.exports = function async (makeGenerator, context) {
     return function () {
         if (!context) context = this;
-        let generator = makeGenerator.apply(context, arguments);
+        const generator = makeGenerator.apply(context, arguments);
 
         function handle (result) {
             if (result.done) return Promise.resolve(result.value);

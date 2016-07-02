@@ -11,7 +11,7 @@ class Roll extends AbstractAction {
 
         path.forEach((part) => {
             part = part.split(':');
-            options[part[0]] = part[1];
+            options[part[0]] = part[1] || true;
         });
 
         if (!options.type) {

@@ -9,15 +9,17 @@ const Auth = require('src/actions/Auth.js');
 const BodyParser = require('koa-json-body');
 
 class Router {
-    constructor (app, config) {
+    constructor (app, config, db) {
         this.app = app;
         this.config = config;
+        this.db = db;
 
         this.app.name = config.app.name;
 
         try {
             this.app.use(BodyParser());
 
+            this.app.use(db.getParser());
             this.app.use(Router.time);
             this.app.use(Router.reqLog);
             this.app.use(Router.auth);
@@ -61,7 +63,7 @@ class Router {
         yield next;
     }
 
-    static *route(next) {
+    static *route (next) {
         let path = this.path
             .slice(1)
             .replace(/%20/g, ' ')

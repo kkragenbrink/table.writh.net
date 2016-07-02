@@ -21,8 +21,17 @@ class Auth extends AbstractAction {
         return valid;
     }
 
+    getUserToken () {
+        this.context.user = JSON.parse(this.context.cookies.get('auth', {
+            signed: true,
+            //secure: true
+        }));
+
+        return this.context.user;
+    }
+
     isValidUser () {
-        return !!this.context.cookies.get('auth', {signed: true});
+        return !!this.getUserToken();
     }
 
     *validate () {
@@ -40,10 +49,9 @@ class Auth extends AbstractAction {
                     name: yield MUSH.getInstance().getName(user)
                 };
 
-                const cookie = new Buffer(JSON.stringify(this.context.body));
-                log.debug(cookie);
-                this.context.cookies.set('auth', cookie, {
+                this.context.cookies.set('auth', JSON.stringify(this.context.body), {
                     signed: true,
+                    //secure: true,
                     expires: expiration
                 });
 

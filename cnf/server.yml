@@ -1,10 +1,11 @@
 app:
   name:
   port:
-  timeout: 10000
+  timeout:
+  secret:
 
 database:
-  name:
+  name: db/table.json
 
 log:
   levels:

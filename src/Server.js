@@ -3,6 +3,7 @@
 const koa = require('koa');
 const log = require('src/interfaces/Log').getLogger('src/Server');
 
+const Database = require('src/interfaces/Database');
 const Router = require('src/Router');
 
 class Server {
@@ -13,7 +14,8 @@ class Server {
 
         this.app.keys = [this.config.app.secret, Math.random()];
 
-        this.router = new Router(this.app, this.config);
+        this.db = new Database(this.config);
+        this.router = new Router(this.app, this.config, this.db);
     }
 
     start () {
