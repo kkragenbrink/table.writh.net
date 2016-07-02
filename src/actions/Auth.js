@@ -7,6 +7,8 @@ const POST_METHOD = 'POST';
 const AbstractAction = require('src/actions/AbstractAction');
 const MUSH = require('src/interfaces/TableMUSH');
 
+const log = require('src/interfaces/Log').getLogger('src.actions.Auth');
+
 class Auth extends AbstractAction {
     *init () {
         let valid = this.isValidUser();
@@ -37,6 +39,8 @@ class Auth extends AbstractAction {
                     dbref: yield MUSH.getInstance().getDbref(user),
                     name: yield MUSH.getInstance().getName(user)
                 };
+
+                log.debug(this.context.body);
                 this.context.cookies.set('auth', JSON.stringify(this.context.body), {
                     signed: true,
                     expires: expiration
