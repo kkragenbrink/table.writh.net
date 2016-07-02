@@ -22,10 +22,14 @@ class Auth extends AbstractAction {
     }
 
     getUserToken () {
-        this.context.user = JSON.parse(this.context.cookies.get('auth', {
+        this.context.user = this.context.cookies.get('auth', {
             signed: true,
-            //secure: true
-        }));
+            secure: true
+        });
+
+        if (this.context.user) {
+            this.context.user = JSON.parse(this.context.user);
+        }
 
         return this.context.user;
     }
@@ -51,7 +55,7 @@ class Auth extends AbstractAction {
 
                 this.context.cookies.set('auth', JSON.stringify(this.context.body), {
                     signed: true,
-                    //secure: true,
+                    secure: true,
                     expires: expiration
                 });
 
