@@ -2,7 +2,7 @@ app:
   name: test
   port: 8174
   timeout: 10000
-  secret: ".585>a%P.KvCi-U344i/X&e?jDuJf]-{=/9`7V#/3s*c95Kb~]'6WFfnCkIXdM5"
+  secret:
 
 database:
   name: db/table.json
