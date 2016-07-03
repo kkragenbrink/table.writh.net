@@ -32,6 +32,9 @@ class Character extends AbstractAction {
         else if (path && path.length && !isNaN(parseInt(path[0]))) {
             return this.db.get(+path[0]);
         }
+        else if (!path) {
+            return this.db.find({owner: this.context.user.dbref});
+        }
     }
 
     GET (path) {
