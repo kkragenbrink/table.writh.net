@@ -15,8 +15,10 @@ class Auth extends AbstractAction {
             let login = async(this.validate, this);
             valid = yield login();
         }
+        else if (this.context.method === 'GET') {
+            this.context.body = this.getUserToken();
+        }
 
-        return valid;
     }
 
     getUserToken () {
@@ -59,9 +61,6 @@ class Auth extends AbstractAction {
 
                 return true;
             }
-        }
-        else if (this.context.method === 'GET') {
-            this.content.body = this.getUserToken();
         }
 
         this.context.status = 401;
