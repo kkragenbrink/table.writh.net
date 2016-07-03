@@ -55,10 +55,13 @@ class Router {
         this.request.req.connection.encrypted = true; // FIXME: Workaround for being behind a proxy.
 
         let auth = new Auth(this);
-        let authenticate = async(auth.init, auth);
-        let isAuthorized = yield authenticate();
 
-        if (!isAuthorized) {
+        if (this.method === 'POST') {
+            const authenticate = async(auth.init, auth);
+            yield authenticate();
+        }
+
+        if (!auth.isValidUser()) {
             return this.body;
         }
 

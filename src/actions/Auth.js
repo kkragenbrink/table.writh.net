@@ -18,7 +18,6 @@ class Auth extends AbstractAction {
         else if (this.context.method === 'GET') {
             this.context.body = this.getUserToken();
         }
-
     }
 
     getUserToken () {
