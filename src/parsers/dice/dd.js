@@ -246,13 +246,13 @@ class dd extends AbstractParser {
             messages.push('Invalid syntax.');
         }
 
-        MUSH.getInstance().pemit(dbref, util.format('\\[[ansi(<#00A0F0>,webroll)]\\] %s', messages.join('\n[space(10)]')));
+        MUSH.getInstance().pemit(dbref, util.format('\\[[ansi(<#73A6B5>,webroll)]\\] %s', messages.join('\n[space(10)]')));
 
         if (!this.options.private) {
-            MUSH.getInstance().oemit(dbref, util.format('\\[[ansi(<#00A0F0>,webroll)]\\] %s', messages.join('\n[space(10)]')));
+            MUSH.getInstance().oemit(dbref, util.format('\\[[ansi(<#73A6B5>,webroll)]\\] %s', messages.join('\n[space(10)]')));
         }
         else if (this.options.dm) {
-            MUSH.getInstance().oemit(dbref, util.format('\\[[ansi(<#00A0F0>,webroll)]\\] [name(%s)] rolls some dice behind the DM screen.', dbref));
+            MUSH.getInstance().oemit(dbref, util.format('\\[[ansi(<#73A6B5>,webroll)]\\] [name(%s)] rolls some dice behind the DM screen.', dbref));
         }
     }
 }

@@ -11,7 +11,7 @@ class Auth extends AbstractAction {
     *init () {
         let valid = this.isValidUser();
 
-        if (!valid) {
+        if (!valid || this.context.method === 'POST') {
             let login = async(this.validate, this);
             valid = yield login();
         }
