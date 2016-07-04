@@ -56,12 +56,12 @@ class Router {
 
         let auth = new Auth(this);
 
-        if (this.method === 'POST') {
-            const authenticate = async(auth.init, auth);
-            yield authenticate();
-        }
-
         if (!auth.isValidUser()) {
+            if (this.method === 'POST') {
+                const authenticate = async(auth.init, auth);
+                yield authenticate();
+            }
+
             return this.body;
         }
 
@@ -78,14 +78,15 @@ class Router {
         action = action.charAt(0).toUpperCase() + action.slice(1);
 
         try {
-            let Action = require(util.format('src/actions/%s', action));
-            let instance = new Action(this);
-            let handler = async(instance.init, instance);
+            const Action = require(`src/actions/${action}`);
+            const instance = new Action(this);
+            const handler = async(instance.init, instance);
             yield handler(path);
         }
         catch (e) {
             if (e.code === 'MODULE_NOT_FOUND') {
                 this.status = 404;
+                this.body = '"MODULE_NOT_FOUND"';
             }
             else if (e.status) {
                 this.status = e.status;

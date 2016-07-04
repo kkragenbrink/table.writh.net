@@ -18,6 +18,15 @@ class Auth extends AbstractAction {
         else if (this.context.method === 'GET') {
             this.context.body = this.getUserToken();
         }
+        else if (this.context.method === 'DELETE') {
+            const expiration = new Date();
+            expiration.setHours(expiration.getHours() - 24);
+            this.context.cookies.set('auth', JSON.stringify({}), {
+                signed: true,
+                secure: true,
+                expires: expiration
+            });
+        }
     }
 
     getUserToken () {

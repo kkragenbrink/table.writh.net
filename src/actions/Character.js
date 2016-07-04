@@ -3,12 +3,12 @@
 const AbstractAction = require('src/actions/AbstractAction');
 
 const extend = require('extend');
+const log = require('src/interfaces/Log').getLogger('src.actions.Character');
 const util = require('util');
 
 class Character extends AbstractAction {
     constructor (c) {
         super(c);
-
         this.db = this.context.db.collection('characters');
     }
 
@@ -32,7 +32,7 @@ class Character extends AbstractAction {
         else if (path && path.length && !isNaN(parseInt(path[0]))) {
             return this.db.get(+path[0]);
         }
-        else if (!path) {
+        else if (path && !path.length) {
             return this.db.find({owner: this.context.user.dbref});
         }
     }
@@ -41,7 +41,16 @@ class Character extends AbstractAction {
         this.context.body = this.getCharacter(path);
     }
 
+    DELETE (path) {
+        const character = this.getCharacter(path);
+        if (character.owner === this.context.user.dbref) {
+            this.db.remove(character);
+            this.context.status = 204;
+        }
+    }
+
     POST () {
+        log.debug(this.context.request.body);
         if (this.context.request.body && this.context.request.body['name']) {
             let character = this.db.findOne({
                 name: this.context.request.body['name'],
@@ -67,9 +76,15 @@ class Character extends AbstractAction {
     PUT (path) {
         const character = this.getCharacter(path);
 
-        if (util.isArray(character)) {
+        if (util.isArray(character) || !character) {
             this.context.status = 400;
             this.context.body = '"Invalid character ID."';
+            return;
+        }
+
+        if (character.owner !== this.context.user.dbref) {
+            this.context.status = 400;
+            this.context.body = '"You may only edit your characters."';
             return;
         }
 
